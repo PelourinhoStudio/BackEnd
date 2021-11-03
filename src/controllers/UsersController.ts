@@ -1,11 +1,11 @@
-export function UserService(UserModel) {
-  let service = {
-    create,
-    findAll,
-  };
 
-  function create(values) {
-    let newUser = UserModel(values);
+
+import UserModel from "../models/User"
+
+
+  export async function create(values) {
+    let newUser = await new UserModel(values);
+
     return save(newUser);
   }
 
@@ -19,7 +19,7 @@ export function UserService(UserModel) {
     });
   }
 
-  function findAll() {
+   function findAll() {
     return new Promise((resolve, reject) => {
       UserModel.find({}, (err, users) => {
         if (err) reject(err);
@@ -29,5 +29,4 @@ export function UserService(UserModel) {
     });
   }
 
-  return service;
-}
+
