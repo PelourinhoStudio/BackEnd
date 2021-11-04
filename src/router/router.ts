@@ -5,19 +5,21 @@ export const router = express();
 
 const usersController = new UsersController();
 
-router.post("/users", usersController.create);
+router.post("/users", usersController.create); //create user
 
-/* router.get('/users', UserController ); //get all users
+router.get("/users", usersController.getAllUsers); //get all users
 
+router.get("/users/:id", usersController.getUserById); //get ONE user by id
+
+router.put("/users/:id", usersController.update); //update ONE user by id
+
+router.delete("/users/:id", usersController.delete); // delete ONE user by id
+
+/*
 router.get('/users/new', UserController); //show form to make ONE new user
-
-router.get('/users/:id', UserController); // get ONE user by id
 
 router.get('/users/:id/edit', UserController); // show edit form of ONE user
 
-router.put('/users/:id', UserController); // update ONE user by id, then redirect
-
-router.delete('/users/:id', UserController); // delete ONE user by id, then redirect */
 
 // =========================================================================       Images
 
