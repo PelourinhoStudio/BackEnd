@@ -15,13 +15,7 @@ router.put("/users/:id", usersController.update); //update ONE user by id
 
 router.delete("/users/:id", usersController.delete); // delete ONE user by id
 
-/*
-router.get('/users/new', UserController); //show form to make ONE new user
-
-router.get('/users/:id/edit', UserController); // show edit form of ONE user
-
-
-// =========================================================================       Images
+//Images
 
 /* router.get('/images', ImageController); //get all images
 

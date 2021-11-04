@@ -7,10 +7,13 @@ export default class UsersController {
 
     const newUser = await new UserModel(body);
 
-    newUser.save().then(() => {
-      res.status(200);
-      res.send(newUser);
-    });
+    newUser
+      .save()
+      .then(() => {
+        res.status(201);
+        res.send(newUser);
+      })
+      .catch(res.status(400));
   }
 
   async getAllUsers(req: Request, res: Response) {
@@ -19,6 +22,8 @@ export default class UsersController {
     if (users) {
       res.status(200);
       res.send(users);
+    } else {
+      res.status(400);
     }
   }
 
@@ -30,6 +35,8 @@ export default class UsersController {
     if (user) {
       res.status(200);
       res.send(user);
+    } else {
+      res.status(400);
     }
   }
 
@@ -42,8 +49,10 @@ export default class UsersController {
     });
 
     if (updatedUser) {
-      res.status(200);
+      res.status(201);
       res.send(updatedUser);
+    } else {
+      res.status(400);
     }
   }
 
@@ -54,6 +63,8 @@ export default class UsersController {
     if (deletedUser) {
       res.status(200);
       res.send(deletedUser);
+    } else {
+      res.status(400);
     }
   }
 }
