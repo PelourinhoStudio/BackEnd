@@ -1,32 +1,23 @@
+import { Request, Response } from "express";
+import UserModel from "../models/User";
 
+export default class UsersController {
+  async create(req: Request, res: Response) {
+    const body = req.body
 
-import UserModel from "../models/User"
-
-
-  export async function create(values) {
-    let newUser = await new UserModel(values);
-
-    return save(newUser);
+    let newUser = await new UserModel(body);
+  
+    newUser.save()
   }
-
-  function save(newUser) {
-    return new Promise((resolve, reject) => {
-      newUser.save((err) => {
-        if (err) reject(err);
-
-        resolve("User created");
-      });
-    });
-  }
-
-   function findAll() {
-    return new Promise((resolve, reject) => {
-      UserModel.find({}, (err, users) => {
-        if (err) reject(err);
-
-        resolve(users);
-      });
-    });
-  }
+}
 
 
+// function findAll() {
+//   return new Promise((resolve, reject) => {
+//     UserModel.find({}, (err, users) => {
+//       if (err) reject(err);
+
+//       resolve(users);
+//     });
+//   });
+// }

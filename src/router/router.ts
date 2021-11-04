@@ -1,22 +1,11 @@
 import express from "express";
-import {create} from "../controllers/UsersController";
-
+import UsersController from "../controllers/UsersController";
 
 export const router = express();
 
+const usersController = new UsersController();
 
-// =========================================================================       Users
-
-router.post('/users', (req,res, next) => {
-    let body = req.body 
-    create(body).then(
-        () => {
-            res.status(200)
-            res.send(body)
-            next();
-        }
-    )
-} ); // add new user to database, then redirect
+router.post("/users", usersController.create);
 
 /* router.get('/users', UserController ); //get all users
 
