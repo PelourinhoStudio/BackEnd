@@ -1,6 +1,6 @@
 import express from "express";
 import UsersController from "../controllers/UsersController";
-
+import ImagesController from "../controllers/ImageController";
 export const router = express();
 
 const usersController = new UsersController();
@@ -17,16 +17,14 @@ router.delete("/users/:id", usersController.delete); // delete ONE user by id
 
 //Images
 
-/* router.get('/images', ImageController); //get all images
+const ImageController = new ImagesController();
 
-router.get('/images/new', ImageController); //show form to upload ONE new image
+router.get('/images', ImageController.create); //get all images
 
-router.post('/images', ImageController); // add new image to database, then redirect
+router.get('/images/new', ImageController.getAllImages); //show form to upload ONE new image
 
-router.get('/images/:id', ImageController); // get ONE image by id
+router.post('/images', ImageController.getImageById); // add new image to database, then redirect
 
-router.get('/images/:id/edit', ImageController); // show edit form of ONE image
+router.put('/images/:id', ImageController.update); // get ONE image by id
 
-router.put('/images/:id', ImageController); // update ONE image by id, then redirect
-
-router.delete('/images/:id', ImageController); // delete ONE image by id, then redirect       */
+router.delete('/images/:id', ImageController.delete); // delete ONE image by id, then redirect       
