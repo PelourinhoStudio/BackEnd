@@ -19,12 +19,12 @@ router.delete("/users/:id", usersController.delete); // delete ONE user by id
 
 const ImageController = new ImagesController();
 
-router.get('/images', ImageController.create); //get all images
+router.post("/images", ImageController.create); //create image
 
-router.get('/images/new', ImageController.getAllImages); //show form to upload ONE new image
+router.get("/images", ImageController.getAllImages); //get all images
 
-router.post('/images', ImageController.getImageById); // add new image to database, then redirect
+router.get("/images/:id", ImageController.getImageById); //get ONE image by id
 
-router.put('/images/:id', ImageController.update); // get ONE image by id
+router.put("/images/:id", ImageController.update); //update ONE image by id
 
-router.delete('/images/:id', ImageController.delete); // delete ONE image by id, then redirect       
+router.delete("/images/:id", ImageController.delete); // delete ONE image by id      

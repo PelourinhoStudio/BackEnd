@@ -17,18 +17,18 @@ export default class ImageController {
   }
 
   async getAllImages(req: Request, res: Response) {
-    const users = await ImageModel.find({});
+    const image = await ImageModel.find({});
 
-    if (users) {
+    if (image) {
       res.status(200);
-      res.send(users);
+      res.send(image);
     } else {
       res.status(400);
     }
   }
 
   async getImageById(req: Request, res: Response) {
-    const id = req.params.id;
+    const {id} = req.params;
 
     const image = await ImageModel.findById(id);
 
