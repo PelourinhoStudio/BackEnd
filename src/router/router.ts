@@ -3,28 +3,50 @@ import UsersController from "../controllers/UsersController";
 import ImagesController from "../controllers/ImageController";
 export const router = express();
 
+//Users
 const usersController = new UsersController();
 
-router.post("/users", usersController.create); //create user
+//Create user
+router.post("/users", usersController.create);
 
-router.get("/users", usersController.getAllUsers); //get all users
+//Get all users
+router.get("/users", usersController.getAllUsers);
 
-router.get("/users/:id", usersController.getUserById); //get ONE user by id
+//Get one user by id
+router.get("/users/:id", usersController.getUserById);
 
-router.put("/users/:id", usersController.update); //update ONE user by id
+//Get users by state
+router.get("/users/state/:state", usersController.getUsersByState);
 
-router.delete("/users/:id", usersController.delete); // delete ONE user by id
+//Get users by userType
+router.get("/users/type/:type", usersController.getUsersByType);
+
+//Get users by lastOnline
+router.get("/users", usersController.getUsersByType);
+
+//Update one user by id
+router.put("/users/:id", usersController.update);
+
+//Delete one user by id
+router.delete("/users/:id", usersController.delete);
 
 //Images
-
 const ImageController = new ImagesController();
 
-router.post("/images", ImageController.create); //create image
+//Create image
+router.post("/images", ImageController.create);
 
-router.get("/images", ImageController.getAllImages); //get all images
+//Get all images
+router.get("/images", ImageController.getAllImages);
 
-router.get("/images/:id", ImageController.getImageById); //get ONE image by id
+//Get one image by id
+router.get("/images/:id", ImageController.getImageById);
 
-router.put("/images/:id", ImageController.update); //update ONE image by id
+//Get all images of a category
+router.get("/images/category/:category", ImageController.getImagesByCategory);
 
-router.delete("/images/:id", ImageController.delete); // delete ONE image by id      
+//Update one image by id
+router.put("/images/:id", ImageController.update);
+
+//Delete one image by id
+router.delete("/images/:id", ImageController.delete);

@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import UserModel from "../models/User";
 
 export default class UsersController {
+  //Create user
   async create(req: Request, res: Response) {
-    const body = req.body;
+    const { body } = req;
 
     const newUser = await new UserModel(body);
 
@@ -16,6 +17,7 @@ export default class UsersController {
       .catch(res.status(400));
   }
 
+  //Get all users
   async getAllUsers(req: Request, res: Response) {
     const users = await UserModel.find({});
 
@@ -27,8 +29,9 @@ export default class UsersController {
     }
   }
 
+  //Get one user by id
   async getUserById(req: Request, res: Response) {
-    const id = req.params.id;
+    const { id } = req.params;
 
     const user = await UserModel.findById(id);
 
@@ -40,9 +43,38 @@ export default class UsersController {
     }
   }
 
+  //Get users by state
+  async getUsersByState(req: Request, res: Response) {
+    const { state } = req.params;
+
+    const users = await UserModel.find({ state: [state] });
+
+    if (users) {
+      res.status(200);
+      res.send(users);
+    } else {
+      res.status(400);
+    }
+  }
+
+  //Get users by userType
+  async getUsersByType(req: Request, res: Response) {
+    const { type } = req.params;
+
+    const users = await UserModel.find({ userType: [type] });
+
+    if (users) {
+      res.status(200);
+      res.send(users);
+    } else {
+      res.status(400);
+    }
+  }
+
+  //Update one user by id
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const body = req.body;
+    const { body } = req;
 
     const updatedUser = await UserModel.findByIdAndUpdate(id, body, {
       new: true,
@@ -56,6 +88,7 @@ export default class UsersController {
     }
   }
 
+  //Delete one user by id
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     const deletedUser = await UserModel.findByIdAndRemove(id);

@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import ImageModel from "../models/Image";
 
 export default class ImageController {
+  //Create image
   async create(req: Request, res: Response) {
-    const body = req.body;
+    const { body } = req;
 
     const newImage = await new ImageModel(body);
 
@@ -15,7 +16,7 @@ export default class ImageController {
       })
       .catch(res.status(400));
   }
-
+  //Get all images
   async getAllImages(req: Request, res: Response) {
     const image = await ImageModel.find({});
 
@@ -27,8 +28,9 @@ export default class ImageController {
     }
   }
 
+  //Get one image by id
   async getImageById(req: Request, res: Response) {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const image = await ImageModel.findById(id);
 
@@ -40,9 +42,26 @@ export default class ImageController {
     }
   }
 
+  //Get all images of a category
+  async getImagesByCategory(req: Request, res: Response) {
+    const { category } = req.params;
+
+    const images = await ImageModel.find({
+      category: [category],
+    });
+
+    if (images) {
+      res.status(200);
+      res.send(images);
+    } else {
+      res.status(400);
+    }
+  }
+
+  //Update one image by id
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const body = req.body;
+    const { body } = req;
 
     const updateImage = await ImageModel.findByIdAndUpdate(id, body, {
       new: true,
@@ -56,6 +75,7 @@ export default class ImageController {
     }
   }
 
+  //Delete one image by id
   async delete(req: Request, res: Response) {
     const { id } = req.params;
     const deleteImage = await ImageModel.findByIdAndRemove(id);
