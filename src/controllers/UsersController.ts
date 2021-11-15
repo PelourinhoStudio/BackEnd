@@ -1,10 +1,63 @@
 import { Request, Response } from "express";
+import "../lib/env";
+import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
 
 export default class UsersController {
   //Create user
   async create(req: Request, res: Response) {
+
+    // Our register logic starts here
+  try {
+    // Get user input
     const { body } = req;
+
+    
+    // Validate user input
+    if (!(body.email && body.password && body.firstName && body.lastName)) {
+      res.status(400).send("All input is required");
+    }
+
+    // check if user already exist
+    // Validate if user exist in our database
+    const oldUser = await UserModel.findOne({ email: body.email });
+
+    if (oldUser) {
+      return res.status(409).send("User Already Exist. Please Login");
+    }
+
+    //Encrypt user password
+    const encryptedPassword = await bcryptjs.hash(body.password, 10);
+
+    // Create user in our database
+
+  
+  body.password = encryptedPassword;
+
+    const user = await UserModel.create(body);
+
+    // Create token
+    const token = jwt.sign(
+      { user_id: user._id, email: body.email},
+      process.env.SECRET,
+      {
+        expiresIn: `${process.env.EXPIRESPASSWORD}`,
+      }
+    );
+    // save user token
+    user.token = token;
+
+    // return new user
+    res.status(201).json(user);
+  } catch (err) {
+    console.log(err);
+  }
+  // Our registe
+
+
+
+  /*  const { body } = req;
 
     const newUser = await new UserModel(body);
 
@@ -14,7 +67,7 @@ export default class UsersController {
         res.status(201);
         res.send(newUser);
       })
-      .catch(res.status(400));
+      .catch(res.status(400));*/
   }
 
   //Get all users
