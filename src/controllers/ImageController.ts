@@ -58,6 +58,26 @@ export default class ImageController {
     }
   }
 
+  //Get images by tags
+  /*
+    example of body
+    {
+      "tags": ["something", "else", "whatever"]
+    }
+  */
+  async getImagesByTags(req: Request, res: Response) {
+    const { body } = req;
+
+    const images = await ImageModel.find({ tags: body.tags });
+
+    if (images) {
+      res.status(200);
+      res.send(images);
+    } else {
+      res.status(400);
+    }
+  }
+
   //Update one image by id
   async update(req: Request, res: Response) {
     const { id } = req.params;

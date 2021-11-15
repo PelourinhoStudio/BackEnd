@@ -45,6 +45,15 @@ router.get("/images/:id", ImageController.getImageById);
 //Get all images of a category
 router.get("/images/category/:category", ImageController.getImagesByCategory);
 
+//Get images from tags
+/*
+  example of body
+  {
+    "tags": ["something", "else", "whatever"]
+  }
+*/
+router.post("/images/tags", ImageController.getImagesByTags);
+
 //Update one image by id
 router.put("/images/:id", ImageController.update);
 
