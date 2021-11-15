@@ -6,6 +6,8 @@ let UserSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   lastOnline: { type: Date },
+  password: { type: String },
+  token: { type: String },
   state: ["Ativo", "Inativo", "Suspenso"],
   userType: ["ADMIN", "DESIGNER", "DEFAULT"],
 });
