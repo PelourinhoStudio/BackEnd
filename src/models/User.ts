@@ -6,8 +6,9 @@ let UserSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   lastOnline: { type: Date },
-  state: ["Ativo", "Inativo", "Suspenso"],
-  userType: ["ADMIN", "DESIGNER", "DEFAULT"],
+  password: { type: String, required: true },
+  state: { type: String, enum: ["Ativo", "Inativo", "Suspenso"] },
+  userType: { type: String, enum: ["ADMIN", "DESIGNER", "DEFAULT"] },
 });
 
 let UserModel = model("User", UserSchema);

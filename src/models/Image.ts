@@ -7,10 +7,10 @@ let ImageSchema = new Schema({
   tags: { type: String, required: true },
   price: { type: Number, required: true },
   year: { type: Date, required: true },
-  imageType: ["real", "digital"],
+  imageType: { type: String, enum: ["real", "digital"] },
   imageCDN: { type: String, required: true, unique: true },
-  likes: { type: Number, required: true, default : 0 },
-  dislikes: { type: Number, required: true, default : 0 }
+  likes: { type: Number, required: true, default: 0 },
+  dislikes: { type: Number, required: true, default: 0 },
 });
 
 let ImageModel = model("Images", ImageSchema);

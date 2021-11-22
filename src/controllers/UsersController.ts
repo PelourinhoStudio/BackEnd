@@ -1,20 +1,63 @@
 import { Request, Response } from "express";
+import "../lib/env";
+import jwt from "jsonwebtoken";
+import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
 
 export default class UsersController {
   //Create user
   async create(req: Request, res: Response) {
-    const { body } = req;
+    try {
+      let { body } = req;
 
-    const newUser = await new UserModel(body);
+      if (!(body.email && body.password && body.firstName && body.lastName)) {
+        res.status(400).send("All input is required");
+      }
 
-    newUser
-      .save()
-      .then(() => {
-        res.status(201);
-        res.send(newUser);
-      })
-      .catch(res.status(400));
+      const oldUser = await UserModel.findOne({ email: body.email });
+
+      if (oldUser) {
+        return res.status(409).send("User Already Exist. Please Login");
+      }
+
+      const encryptedPassword = await bcryptjs.hash(body.password, 10);
+
+      body.password = encryptedPassword;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async login(req: Request, res: Response) {
+    try {
+      // Get user input
+      const { email, password } = req.body;
+
+      // Validate user input
+      if (!(email && password)) {
+        res.status(400).send("All input is required");
+      }
+      // Validate if user exist in our database
+      let user = await UserModel.findOne({ email });
+
+      if (user && (await bcryptjs.compare(password, user.password))) {
+        // Create token
+        const token = jwt.sign(
+          { user_id: user._id, email: user.email, role: user.userType },
+          process.env.SECRET,
+          {
+            expiresIn: `${process.env.EXPIRESPASSWORD}`,
+          }
+        );
+
+        console.log(user);
+        res.status(200).json(token);
+      } else {
+        res.status(400).send("Invalid Credentials");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   //Get all users
