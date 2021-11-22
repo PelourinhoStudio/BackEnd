@@ -7,103 +7,58 @@ import UserModel from "../models/User";
 export default class UsersController {
   //Create user
   async create(req: Request, res: Response) {
-
-    // Our register logic starts here
-  try {
-    // Get user input
-    const { body } = req;
-
-    
-    // Validate user input
-    if (!(body.email && body.password && body.firstName && body.lastName)) {
-      res.status(400).send("All input is required");
-    }
-
-    // check if user already exist
-    // Validate if user exist in our database
-    const oldUser = await UserModel.findOne({ email: body.email });
-
-    if (oldUser) {
-      return res.status(409).send("User Already Exist. Please Login");
-    }
-
-    //Encrypt user password
-    const encryptedPassword = await bcryptjs.hash(body.password, 10);
-
-    // Create user in our database
-
-  
-  body.password = encryptedPassword;
-
-    const user = await UserModel.create(body);
-
-    // Create token
-    const token = jwt.sign(
-      { user_id: user._id, email: body.email},
-      process.env.SECRET,
-      {
-        expiresIn: `${process.env.EXPIRESPASSWORD}`,
-      }
-    );
-    // save user token
-    user.token = token;
-
-    // return new user
-    res.status(201).json(user);
-  } catch (err) {
-    console.log(err);
-  }
-  // Our registe
-
-
-
-  /*  const { body } = req;
-
-    const newUser = await new UserModel(body);
-
-    newUser
-      .save()
-      .then(() => {
-        res.status(201);
-        res.send(newUser);
-      })
-      .catch(res.status(400));*/
-  }
-
-  async login(req: Request, res:Response){
     try {
-      // Get user input
-      const { email, password } = req.body;
-  
-      // Validate user input
-      if (!(email && password)) {
+      let { body } = req;
+
+      if (!(body.email && body.password && body.firstName && body.lastName)) {
         res.status(400).send("All input is required");
       }
-      // Validate if user exist in our database
-      const user = await UserModel.findOne({ email });
-  
-      if (user && (await bcryptjs.compare(password, user.password))) {
-        // Create token
-        const token = jwt.sign(
-          { user_id: user._id, email },
-          process.env.SECRET,
-          {
-            expiresIn: `${process.env.EXPIRESPASSWORD}`,
-          }
-        );
-  
-        // save user token
-        user.token = token;
-  
-        // user
-        res.status(200).json(user);
+
+      const oldUser = await UserModel.findOne({ email: body.email });
+
+      if (oldUser) {
+        return res.status(409).send("User Already Exist. Please Login");
       }
-      res.status(400).send("Invalid Credentials");
+
+      const encryptedPassword = await bcryptjs.hash(body.password, 10);
+
+      body.password = encryptedPassword;
     } catch (err) {
       console.log(err);
     }
   }
 
+  async login(req: Request, res: Response) {
+    try {
+      // Get user input
+      const { email, password } = req.body;
+
+      // Validate user input
+      if (!(email && password)) {
+        res.status(400).send("All input is required");
+      }
+      // Validate if user exist in our database
+      let user = await UserModel.findOne({ email });
+
+      if (user && (await bcryptjs.compare(password, user.password))) {
+        // Create token
+        const token = jwt.sign(
+          { user_id: user._id, email: user.email, role: user.userType },
+          process.env.SECRET,
+          {
+            expiresIn: `${process.env.EXPIRESPASSWORD}`,
+          }
+        );
+
+        console.log(user);
+        res.status(200).json(token);
+      } else {
+        res.status(400).send("Invalid Credentials");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   //Get all users
   async getAllUsers(req: Request, res: Response) {

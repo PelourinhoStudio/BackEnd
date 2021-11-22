@@ -2,43 +2,36 @@ import express from "express";
 import UsersController from "../controllers/UsersController";
 import ImagesController from "../controllers/ImageController";
 export const router = express();
-const auth = require("./middleware/auth");
-
-
-
-
-
-
-
+import verifytoken from "../middleware/auth";
 //Users
 const usersController = new UsersController();
 
 //Create user
-router.post("/register", usersController.create)
+router.post("/register", usersController.create);
 
 //Login user
-router.post("/login", usersController.login)
+router.post("/login", usersController.login);
 
 //Get all users
-router.get("/users", auth, usersController.getAllUsers);
+router.get("/users", verifytoken, usersController.getAllUsers);
 
 //Get one user by id
-router.get("/users/:id",auth,  usersController.getUserById);
+router.get("/users/:id", verifytoken, usersController.getUserById);
 
 //Get users by state
-router.get("/users/state/:state", auth, usersController.getUsersByState);
+router.get("/users/state/:state", verifytoken, usersController.getUsersByState);
 
 //Get users by userType
-router.get("/users/type/:type",auth,  usersController.getUsersByType);
+router.get("/users/type/:type", verifytoken, usersController.getUsersByType);
 
 //Get users by lastOnline
-router.get("/users", auth, usersController.getUsersByType);
+router.get("/users", verifytoken, usersController.getUsersByType);
 
 //Update one user by id
-router.put("/users/:id",auth,  usersController.update);
+router.put("/users/:id", verifytoken, usersController.update);
 
 //Delete one user by id
-router.delete("/users/:id", auth, usersController.delete);
+router.delete("/users/:id", verifytoken, usersController.delete);
 
 //Images
 const ImageController = new ImagesController();
@@ -47,16 +40,20 @@ const ImageController = new ImagesController();
 router.post("/images", ImageController.create);
 
 //Get all images
-router.get("/images",auth,  ImageController.getAllImages);
+router.get("/images", verifytoken, ImageController.getAllImages);
 
 //Get one image by id
-router.get("/images/:id", auth, ImageController.getImageById);
+router.get("/images/:id", verifytoken, ImageController.getImageById);
 
 //Get all images of a category
-router.get("/images/category/:category", auth, ImageController.getImagesByCategory);
+router.get(
+  "/images/category/:category",
+  verifytoken,
+  ImageController.getImagesByCategory
+);
 
 //Update one image by id
-router.put("/images/:id",auth,  ImageController.update);
+router.put("/images/:id", verifytoken, ImageController.update);
 
 //Delete one image by id
-router.delete("/images/:id", auth, ImageController.delete);
+router.delete("/images/:id", verifytoken, ImageController.delete);
