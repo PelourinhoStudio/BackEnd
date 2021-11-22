@@ -8,7 +8,11 @@ let UserSchema = new Schema({
   lastOnline: { type: Date },
   password: { type: String, required: true },
   state: { type: String, enum: ["Ativo", "Inativo", "Suspenso"] },
-  userType: { type: String, enum: ["ADMIN", "DESIGNER", "DEFAULT"] },
+  userType: {
+    type: String,
+    enum: ["admin", "designer", "default"],
+    lowercase: true,
+  },
 });
 
 let UserModel = model("User", UserSchema);

@@ -7,8 +7,6 @@ import UserModel from "../models/User";
 export default class UsersController {
   //Create user
 
-  
-
   async create(req: Request, res: Response) {
     try {
       let { body } = req;
@@ -64,18 +62,26 @@ export default class UsersController {
   }
 
   //Get all users
+  // EXAMPLE OF FILTER
+  /* {
+    "userType": "admin"
+  } */
   async getAllUsers(req: Request, res: Response) {
-    const {page = 1} : any = req.query;
-    const ITEMS_PER_PAGE = 10
-    return new Promise (function (resolve, reject){
-      UserModel.find({}, function (err, users){
-        if(err) reject(err);
-        resolve(users);
-      })
+    const { userType } = req.body;
+    const { page = 1 }: any = req.query;
+    const ITEMS_PER_PAGE = 10;
+
+    UserModel.find({ userType: userType.toLowerCase() }, function (err, users) {
+      if (users) {
+        res.status(200);
+        res.send(users);
+      } else {
+        res.status(400);
+      }
+    })
       .limit(ITEMS_PER_PAGE)
-      .skip((page-1) * ITEMS_PER_PAGE)
+      .skip((page - 1) * ITEMS_PER_PAGE)
       .sort([[req.query.orderBy, req.query.direction]]);
-    });
   }
 
   //Get one user by id
