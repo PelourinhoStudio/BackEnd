@@ -6,6 +6,9 @@ import UserModel from "../models/User";
 
 export default class UsersController {
   //Create user
+
+  
+
   async create(req: Request, res: Response) {
     try {
       let { body } = req;
@@ -62,14 +65,17 @@ export default class UsersController {
 
   //Get all users
   async getAllUsers(req: Request, res: Response) {
-    const users = await UserModel.find({});
-
-    if (users) {
-      res.status(200);
-      res.send(users);
-    } else {
-      res.status(400);
-    }
+    const {page = 1} : any = req.query;
+    const ITEMS_PER_PAGE = 10
+    return new Promise (function (resolve, reject){
+      UserModel.find({}, function (err, users){
+        if(err) reject(err);
+        resolve(users);
+      })
+      .limit(ITEMS_PER_PAGE)
+      .skip((page-1) * ITEMS_PER_PAGE)
+      .sort([[req.query.orderBy, req.query.direction]]);
+    });
   }
 
   //Get one user by id
