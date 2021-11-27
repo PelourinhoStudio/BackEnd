@@ -7,7 +7,11 @@ let UserSchema = new Schema({
   lastName: { type: String, required: true },
   lastOnline: { type: Date },
   password: { type: String, required: true },
-  state: { type: String, enum: ["Ativo", "Inativo", "Suspenso"] },
+  state: {
+    type: String,
+    enum: ["ativo", "inativo", "suspenso"],
+    lowercase: true,
+  },
   userType: {
     type: String,
     enum: ["admin", "designer", "default"],

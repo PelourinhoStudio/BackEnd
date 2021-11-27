@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import "../lib/env";
-import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
 
-export default class UsersController {
-  //Create user
+const ITEMS_PER_PAGE = 10;
 
+export default class UsersController {
   async create(req: Request, res: Response) {
     try {
       let { body } = req;
@@ -15,144 +14,135 @@ export default class UsersController {
         res.status(400).send("All input is required");
       }
 
-      const oldUser = await UserModel.findOne({ email: body.email });
-
-      if (oldUser) {
+      if (await UserModel.findOne({ email: body.email })) {
         return res.status(409).send("User Already Exist. Please Login");
       }
 
-      const encryptedPassword = await bcryptjs.hash(body.password, 10);
+      body.password = await bcryptjs.hash(body.password, 10);
 
-      body.password = encryptedPassword;
+      UserModel.create(body, (err, newUser) => {
+        if (newUser) {
+          res.status(201).json(newUser);
+        } else {
+          res.sendStatus(400);
+        }
+      });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
-  async login(req: Request, res: Response) {
-    try {
-      // Get user input
-      const { email, password } = req.body;
-
-      // Validate user input
-      if (!(email && password)) {
-        res.status(400).send("All input is required");
-      }
-      // Validate if user exist in our database
-      let user = await UserModel.findOne({ email });
-
-      if (user && (await bcryptjs.compare(password, user.password))) {
-        // Create token
-        const token = jwt.sign(
-          { user_id: user._id, email: user.email, role: user.userType },
-          process.env.SECRET,
-          {
-            expiresIn: `${process.env.EXPIRESPASSWORD}`,
-          }
-        );
-
-        console.log(user);
-        res.status(200).json(token);
-      } else {
-        res.status(400).send("Invalid Credentials");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  //Get all users
-  // EXAMPLE OF FILTER
-  /* {
-    "userType": "admin"
-  } */
   async getAllUsers(req: Request, res: Response) {
-    const { userType } = req.body;
-    const { page = 1 }: any = req.query;
-    const ITEMS_PER_PAGE = 10;
+    try {
+      const { page = 1 }: any = req.query;
 
-    UserModel.find({ userType: userType.toLowerCase() }, function (err, users) {
-      if (users) {
-        res.status(200);
-        res.send(users);
-      } else {
-        res.status(400);
-      }
-    })
-      .limit(ITEMS_PER_PAGE)
-      .skip((page - 1) * ITEMS_PER_PAGE)
-      .sort([[req.query.orderBy, req.query.direction]]);
+      UserModel.find({}, function (err, users) {
+        if (users) {
+          res.status(200).json(users);
+        } else {
+          res.sendStatus(400);
+        }
+      })
+        .limit(ITEMS_PER_PAGE)
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .sort([[req.query.orderBy, req.query.direction]]);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  //Get one user by id
   async getUserById(req: Request, res: Response) {
-    const { id } = req.params;
+    try {
+      const { id } = req.params;
 
-    const user = await UserModel.findById(id);
-
-    if (user) {
-      res.status(200);
-      res.send(user);
-    } else {
-      res.status(400);
+      UserModel.findById(id, (err, user) => {
+        if (user) {
+          res.status(200).json(user);
+        } else {
+          res.sendStatus(400);
+        }
+      });
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  //Get users by state
   async getUsersByState(req: Request, res: Response) {
-    const { state } = req.params;
+    try {
+      const { state } = req.params;
+      const { page = 1 }: any = req.query;
 
-    const users = await UserModel.find({ state: [state] });
-
-    if (users) {
-      res.status(200);
-      res.send(users);
-    } else {
-      res.status(400);
+      UserModel.find({ state: state }, (err, users) => {
+        if (users) {
+          res.status(200).json(users);
+        } else {
+          res.sendStatus(400);
+        }
+      })
+        .limit(ITEMS_PER_PAGE)
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .sort([[req.query.orderBy, req.query.direction]]);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  //Get users by userType
   async getUsersByType(req: Request, res: Response) {
-    const { type } = req.params;
+    try {
+      const { type } = req.params;
+      const { page = 1 }: any = req.query;
 
-    const users = await UserModel.find({ userType: [type] });
-
-    if (users) {
-      res.status(200);
-      res.send(users);
-    } else {
-      res.status(400);
+      UserModel.find({ userType: type }, (err, users) => {
+        if (users) {
+          res.status(200).json(users);
+        } else {
+          res.sendStatus(400);
+        }
+      })
+        .limit(ITEMS_PER_PAGE)
+        .skip((page - 1) * ITEMS_PER_PAGE)
+        .sort([[req.query.orderBy, req.query.direction]]);
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  //Update one user by id
   async update(req: Request, res: Response) {
-    const { id } = req.params;
-    const { body } = req;
+    try {
+      const { id } = req.params;
+      const { body } = req;
 
-    const updatedUser = await UserModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
-
-    if (updatedUser) {
-      res.status(201);
-      res.send(updatedUser);
-    } else {
-      res.status(400);
+      UserModel.findByIdAndUpdate(
+        id,
+        body,
+        {
+          new: true,
+        },
+        (err, updatedUser) => {
+          if (updatedUser) {
+            res.status(201).json(updatedUser);
+          } else {
+            res.sendStatus(400);
+          }
+        }
+      );
+    } catch (err) {
+      console.error(err);
     }
   }
 
-  //Delete one user by id
   async delete(req: Request, res: Response) {
-    const { id } = req.params;
-    const deletedUser = await UserModel.findByIdAndRemove(id);
-
-    if (deletedUser) {
-      res.status(200);
-      res.send(deletedUser);
-    } else {
-      res.status(400);
+    try {
+      const { id } = req.params;
+      UserModel.findByIdAndRemove(id, (err, deletedUser) => {
+        if (deletedUser) {
+          res.status(200).json(deletedUser);
+        } else {
+          res.sendStatus(400);
+        }
+      });
+    } catch (err) {
+      console.error(err);
     }
   }
 }

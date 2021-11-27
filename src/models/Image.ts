@@ -3,7 +3,11 @@ import { model, Schema } from "mongoose";
 let ImageSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  category: ["Landscape", "Wallpaper", "Nature", "Drawing"],
+  category: {
+    type: [String],
+    enum: ["Landscape", "Wallpaper", "Nature", "Drawing"],
+    lowercase: true,
+  },
   tags: { type: String, required: true },
   price: { type: Number, required: true },
   year: { type: Date, required: true },
