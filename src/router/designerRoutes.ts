@@ -10,4 +10,6 @@ const authController = new AuthController();
 
 router.use(authController.verifyTokenLoggedIn);
 
+router.get("/", usersController.whoAmI);
+
 export default router;

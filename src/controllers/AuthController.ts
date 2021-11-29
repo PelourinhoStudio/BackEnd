@@ -4,11 +4,11 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import UserModel from "@models/User";
 
 interface RequestWithToken extends Request {
-  decoded: any;
+  token: any;
 }
 
 export default class AuthController {
- async login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     try {
       // Get user input
       const { email, password } = req.body;
@@ -66,7 +66,7 @@ export default class AuthController {
     });
   }
 
-    async verifyTokenLoggedIn(
+  async verifyTokenLoggedIn(
     req: RequestWithToken,
     res: Response,
     next: NextFunction
@@ -89,7 +89,7 @@ export default class AuthController {
             return res.sendStatus(403);
           }
 
-          req.decoded = { auth: true, decoded };
+          req.token = { auth: true, decoded };
 
           next();
         }

@@ -4,7 +4,9 @@ import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
 
 const ITEMS_PER_PAGE = 10;
-
+interface RequestWithToken extends Request {
+  token: any;
+}
 export default class UsersController {
   async create(req: Request, res: Response) {
     try {
@@ -141,6 +143,26 @@ export default class UsersController {
           res.sendStatus(400);
         }
       });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async whoAmI(req: RequestWithToken, res: Response) {
+    try {
+      const token = req.token;
+
+      UserModel.findById(
+        token.decoded.user_id,
+        "-password -__v",
+        (err, user) => {
+          if (user) {
+            res.status(200).json(user);
+          } else {
+            res.sendStatus(400);
+          }
+        }
+      );
     } catch (err) {
       console.error(err);
     }

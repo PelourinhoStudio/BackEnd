@@ -7,4 +7,4 @@ export const router = express();
 
 router.use("/auth", authRouter);
 router.use("/admin", adminRouter);
-router.set("/me", designerRouter);
+router.use("/me", designerRouter);
