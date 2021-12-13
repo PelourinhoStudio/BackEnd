@@ -8,7 +8,8 @@
     "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "node src/server.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules --no-notify src/server.ts",
-    "test": "jest"
+    "test": "jest",
+    "swagger-autogen": "node swagger.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.1",
@@ -33,6 +34,7 @@
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
+    "swagger-autogen": "^2.17.2",
     "ts-jest": "^26.1.0",
     "ts-node-dev": "^1.0.0-pre.49",
     "tsconfig-paths": "^3.9.0",
@@ -44,6 +46,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.12"
+    "mongoose": "^6.0.12",
+    "swagger-ui-express": "^4.2.0"
   }
 }
