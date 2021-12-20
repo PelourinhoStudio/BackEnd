@@ -68,6 +68,25 @@ export default class ImageController {
     }
   }
 
+
+
+  async getCategories(req: Request, res: Response){
+    try {
+
+
+
+      ImageModel.distinct("category" , (err, categories) => {
+        if (categories) {
+          res.status(200).json(categories);
+        } else {
+          res.sendStatus(400);
+        }
+      });
+    } catch (err) {
+      console.error();
+    }
+  }
+
   async getImagesByTags(req: Request, res: Response) {
     try {
       const { body } = req;
