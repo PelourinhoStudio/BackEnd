@@ -3,16 +3,14 @@ import authRouter from "./authRoutes";
 import adminRouter from "./adminRoutes";
 import designerRouter from "./designerRoutes";
 
-const router = express();
+export const router = express();
 
 router.use("/auth", authRouter);
 router.use("/admin", adminRouter);
 router.use("/me", designerRouter);
 
-exports.router = router;
-
-exports.endpoints = function (app) {
+export function endpoints(app) {
   router.use("/auth", authRouter);
   router.use("/admin", adminRouter);
   router.use("/me", designerRouter);
-};
+}
