@@ -25,7 +25,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      });
+      }).populate("author");
     } catch (err) {
       console.error();
     }

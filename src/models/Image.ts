@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import {UserSchema} from "@models/User";
 
 let ImageSchema = new Schema({
   title: { type: String, required: true },
@@ -15,8 +16,11 @@ let ImageSchema = new Schema({
   imageCDN: { type: String, required: true, unique: true },
   likes: { type: Number, required: true, default: 0 },
   dislikes: { type: Number, required: true, default: 0 },
+  author: { type: Schema.Types.ObjectId, ref:"User" },
 });
 
+
+let User = model("User", UserSchema)
 let ImageModel = model("Images", ImageSchema);
 
 export default ImageModel;
