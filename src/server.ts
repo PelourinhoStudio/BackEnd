@@ -3,7 +3,7 @@ import express from "express";
 import "./database/connection";
 import cors from "cors";
 const swaggerUI = require("swagger-ui-express");
-const swaggerDocument = require("swagger_output.json");
+const swaggerDocument = require("../swagger_output.json");
 import { router } from "./router/router";
 import { endpoints } from "./router/router";
 
