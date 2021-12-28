@@ -8,8 +8,12 @@ import { router } from "./router/router";
 import { endpoints } from "./router/router";
 
 const app = express();
-app.use(cors());
+
 app.use(express.json());
+
+app.use(cors({
+  origin: "*"
+}));
 
 app.use(router);
 
@@ -17,6 +21,6 @@ app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 endpoints(app);
 
-app.listen(3333, () => {
+app.listen(process.env.PORT || 3333, () => {
   console.log("Server running");
 });

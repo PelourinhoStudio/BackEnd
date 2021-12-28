@@ -72,9 +72,6 @@ export default class ImageController {
 
   async getCategories(req: Request, res: Response){
     try {
-
-
-
       ImageModel.distinct("category" , (err, categories) => {
         if (categories) {
           res.status(200).json(categories);
