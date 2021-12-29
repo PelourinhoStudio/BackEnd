@@ -5,7 +5,7 @@ import UserModel from "../models/User";
 
 const ITEMS_PER_PAGE = 10;
 interface RequestWithToken extends Request {
-  token: any;
+  decoded: any;
 }
 export default class UsersController {
   async create(req: Request, res: Response) {
@@ -150,19 +150,15 @@ export default class UsersController {
 
   async whoAmI(req: RequestWithToken, res: Response) {
     try {
-      const token = req.token;
+      const id = req.decoded.decoded.user_id;
 
-      UserModel.findById(
-        token.decoded.user_id,
-        "-password -__v",
-        (err, user) => {
-          if (user) {
-            res.status(200).json(user);
-          } else {
-            res.sendStatus(400);
-          }
+      UserModel.findById(id, "-password -__v", (err, user) => {
+        if (user) {
+          res.status(200).json(user);
+        } else {
+          res.sendStatus(400);
         }
-      );
+      });
     } catch (err) {
       console.error(err);
     }

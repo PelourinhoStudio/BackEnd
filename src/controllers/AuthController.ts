@@ -4,7 +4,7 @@ import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import UserModel from "@models/User";
 
 interface RequestWithToken extends Request {
-  token: any;
+  decoded: any;
 }
 
 export default class AuthController {
@@ -89,7 +89,7 @@ export default class AuthController {
             return res.sendStatus(403);
           }
 
-          req.token = { auth: true, decoded };
+          req.decoded = { auth: true, decoded };
 
           next();
         }

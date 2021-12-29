@@ -11,5 +11,13 @@ const authController = new AuthController();
 router.use(authController.verifyTokenLoggedIn);
 
 router.get("/", usersController.whoAmI);
+router
+  .route("/images")
+  .get(imageController.getMyImages)
+  .post(imageController.create);
+
+router.route("/images/like/:id").put(imageController.handleLike);
+
+router.route("/images/liked").get(imageController.getLikedImages);
 
 export default router;

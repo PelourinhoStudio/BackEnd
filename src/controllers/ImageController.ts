@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 import ImageModel from "../models/Image";
 
+interface RequestWithToken extends Request {
+  decoded: any;
+}
+
 export default class ImageController {
   async create(req: Request, res: Response) {
     try {
       const { body } = req;
+
       ImageModel.create(body, (err, newImage) => {
         if (newImage) {
           res.status(201).json(newImage);
@@ -68,11 +73,9 @@ export default class ImageController {
     }
   }
 
-
-
-  async getCategories(req: Request, res: Response){
+  async getCategories(req: Request, res: Response) {
     try {
-      ImageModel.distinct("category" , (err, categories) => {
+      ImageModel.distinct("category", (err, categories) => {
         if (categories) {
           res.status(200).json(categories);
         } else {
@@ -130,6 +133,70 @@ export default class ImageController {
       ImageModel.findByIdAndRemove(id, (err, deletedImage) => {
         if (deletedImage) {
           res.status(200).json(deletedImage);
+        } else {
+          res.sendStatus(400);
+        }
+      });
+    } catch (err) {
+      console.error();
+    }
+  }
+
+  async getMyImages(req: RequestWithToken, res: Response) {
+    try {
+      const { user_id } = req.decoded.decoded;
+
+      ImageModel.find({ author: user_id }, (err, images) => {
+        if (images) {
+          res.status(200).json(images);
+        } else {
+          res.sendStatus(400);
+        }
+      }).populate("author");
+    } catch (err) {
+      console.error();
+    }
+  }
+
+  // get all images like by user id
+  async getLikedImages(req: RequestWithToken, res: Response) {
+    try {
+      const { user_id } = req.decoded.decoded;
+
+      ImageModel.find({ likedBy: user_id }, (err, images) => {
+        if (images) {
+          res.status(200).json(images);
+        } else {
+          res.sendStatus(400);
+        }
+      }).populate("author");
+    } catch (err) {
+      console.error();
+    }
+  }
+
+  // if user id is in likedBy array, remove it, else add it
+  async handleLike(req: RequestWithToken, res: Response) {
+    try {
+      const { id } = req.params;
+      const { user_id } = req.decoded.decoded;
+
+      ImageModel.findById(id, (err, image) => {
+        if (image) {
+          if (image.likedBy.includes(user_id)) {
+            image.likedBy.splice(image.likedBy.indexOf(user_id), 1);
+          } else {
+            image.likedBy.push(user_id);
+          }
+
+          image.save((err, updatedImage) => {
+            if (updatedImage) {
+              res.status(201).json(updatedImage);
+            } else {
+              console.log(err);
+              res.sendStatus(400);
+            }
+          });
         } else {
           res.sendStatus(400);
         }

@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { UserSchema } from "@models/User";
 
-let ImageSchema = new Schema({
+export let ImageSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   category: {
@@ -14,6 +14,7 @@ let ImageSchema = new Schema({
   year: { type: Date, required: true },
   imageType: { type: String, enum: ["real", "digital"] },
   imageCDN: { type: String, required: true, unique: true },
+  likedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   likes: { type: Number, default: 0 },
   author: { type: Schema.Types.ObjectId, ref: "User" },
 });

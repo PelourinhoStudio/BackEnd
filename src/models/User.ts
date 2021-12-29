@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+
 export let UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   avatar: { type: String },

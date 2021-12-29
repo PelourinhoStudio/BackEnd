@@ -10,6 +10,7 @@ router.use("/auth", authRouter);
 router.use("/admin", adminRouter);
 router.use("/me", designerRouter);
 router.use("/", publicRouter);
+
 export function endpoints(app) {
   router.use("/auth", authRouter);
   router.use("/admin", adminRouter);
