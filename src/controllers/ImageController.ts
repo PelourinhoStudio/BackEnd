@@ -30,7 +30,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      }).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -46,7 +46,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      }).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -67,7 +67,7 @@ export default class ImageController {
             res.sendStatus(400);
           }
         }
-      ).populate("author");
+      ).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -81,7 +81,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      });
     } catch (err) {
       console.error();
     }
@@ -97,7 +97,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      }).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -152,7 +152,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      }).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -169,7 +169,7 @@ export default class ImageController {
         } else {
           res.sendStatus(400);
         }
-      }).populate("author");
+      }).populate("author", "-password -__v -state -userType");
     } catch (err) {
       console.error();
     }
@@ -185,8 +185,10 @@ export default class ImageController {
         if (image) {
           if (image.likedBy.includes(user_id)) {
             image.likedBy.splice(image.likedBy.indexOf(user_id), 1);
+            image.likes--;
           } else {
             image.likedBy.push(user_id);
+            image.likes++;
           }
 
           image.save((err, updatedImage) => {
