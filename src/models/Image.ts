@@ -13,7 +13,7 @@ export let ImageSchema = new Schema({
   price: { type: Number, required: true },
   year: { type: Date, required: true },
   imageType: { type: String, enum: ["real", "digital"] },
-  imageCDN: { type: String, required: true, unique: true },
+  imageCDN: { type: String, required: true },
   likedBy: [{ type: Schema.Types.ObjectId, ref: "User" }],
   likes: { type: Number, default: 0 },
   author: { type: Schema.Types.ObjectId, ref: "User" },
