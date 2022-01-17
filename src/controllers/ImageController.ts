@@ -54,11 +54,11 @@ export default class ImageController {
 
   async getImagesByCategory(req: Request, res: Response) {
     try {
-      const { body } = req.body;
+      const category = req.params.category;
 
       ImageModel.find(
         {
-          category: body.category,
+          category: category,
         },
         (err, images) => {
           if (images) {
