@@ -1,4 +1,6 @@
 import { model, Schema } from "mongoose";
+import { ImageSchema } from "./Image";
+
 
 export let UserSchema = new Schema({
   email: { type: String, required: true, unique: true },

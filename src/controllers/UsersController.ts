@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import "../lib/env";
 import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
+import ImageModel from "@models/Image";
 
 const ITEMS_PER_PAGE = 10;
 interface RequestWithToken extends Request {
@@ -163,4 +164,7 @@ export default class UsersController {
       console.error(err);
     }
   }
+
+   
+  
 }

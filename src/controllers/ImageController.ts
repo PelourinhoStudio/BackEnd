@@ -1,3 +1,4 @@
+import UserModel from "@models/User";
 import { Request, Response } from "express";
 import ImageModel from "../models/Image";
 
@@ -174,6 +175,9 @@ export default class ImageController {
       console.error();
     }
   }
+
+  
+
 
   // if user id is in likedBy array, remove it, else add it
   async handleLike(req: RequestWithToken, res: Response) {
