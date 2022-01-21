@@ -7,7 +7,7 @@ interface RequestWithToken extends Request {
     decoded: any;
   }
   
-  export default class FavoriteController {
+  export default class FavoritesController {
      // get all images favorited by user id
      async getFavoritesImages(req: RequestWithToken, res: Response) {
         try {

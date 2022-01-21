@@ -2,13 +2,14 @@ import express from "express";
 import UsersController from "@controllers/UsersController";
 import ImagesController from "@controllers/ImageController";
 import AuthController from "@controllers/AuthController";
-import FavoriteController from "@controllers/favoriteController";
+import FavoritesController from "@controllers/FavoritesController";
+
 
 const router = express.Router();
 const usersController = new UsersController();
 const imageController = new ImagesController();
 const authController = new AuthController();
-const favoriteController = new FavoriteController();
+const favoriteController = new FavoritesController();
 
 router.use(authController.verifyTokenLoggedIn);
 
