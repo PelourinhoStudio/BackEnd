@@ -19,7 +19,7 @@ interface RequestWithToken extends Request {
             } else {
               res.sendStatus(400);
             }
-          }).populate("favorites");
+          }).populate({path: 'favorites', populate: {path: 'author'}});
         } catch (err) {
           console.error();
         }
