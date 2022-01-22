@@ -176,9 +176,6 @@ export default class ImageController {
     }
   }
 
-  
-
-
   // if user id is in likedBy array, remove it, else add it
   async handleLike(req: RequestWithToken, res: Response) {
     try {
@@ -209,6 +206,23 @@ export default class ImageController {
       });
     } catch (err) {
       console.error();
+    }
+  }
+
+  async searchImages(req: Request, res: Response) {
+    try {
+      let { tags } = req.query;
+      tags = tags.toString().split(",");
+
+      ImageModel.find({ tags: { $in: tags } }, (err, images) => {
+        if (images) {
+          res.status(200).json(images);
+        } else {
+          res.sendStatus(400);
+        }
+      }).populate("author", "-password -__v -state -userType");
+    } catch (err) {
+      console.log(err);
     }
   }
 }

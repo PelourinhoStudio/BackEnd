@@ -9,6 +9,7 @@ const usersController = new UsersController();
 router.get("/images", imageController.getAllImages);
 router.get("/categories", imageController.getCategories);
 router.get("/category/:category", imageController.getImagesByCategory);
+router.get("/search", imageController.searchImages);
 router.get("/image/:id", imageController.getImageById);
 
 
