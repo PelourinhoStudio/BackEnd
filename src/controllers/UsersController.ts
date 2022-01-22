@@ -165,6 +165,26 @@ export default class UsersController {
     }
   }
 
-   
-  
+  async edit(req: RequestWithToken, res: Response) {
+    try {
+      const id = req.decoded.decoded.user_id;
+
+      UserModel.findByIdAndUpdate(
+        id,
+        req.body,
+        {
+          new: true,
+        },
+        (err, updatedUser) => {
+          if (updatedUser) {
+            res.status(201).json(updatedUser);
+          } else {
+            res.sendStatus(400);
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

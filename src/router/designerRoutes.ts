@@ -4,7 +4,6 @@ import ImagesController from "@controllers/ImageController";
 import AuthController from "@controllers/AuthController";
 import FavoritesController from "@controllers/FavoritesController";
 
-
 const router = express.Router();
 const usersController = new UsersController();
 const imageController = new ImagesController();
@@ -25,10 +24,10 @@ router.route("/images/liked").get(imageController.getLikedImages);
 
 router.route("/images/favorites").get(favoriteController.getFavoritesImages);
 
-router.route("/images/favorites/:image_id").put(favoriteController.handleFavorite);
+router
+  .route("/images/favorites/:image_id")
+  .put(favoriteController.handleFavorite);
 
-router.route("/users/:id")
-  .get(usersController.getUserById)
-  .put(usersController.update)
+router.route("/edit").put(usersController.edit);
 
 export default router;
