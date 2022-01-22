@@ -27,4 +27,8 @@ router.route("/images/favorites").get(favoriteController.getFavoritesImages);
 
 router.route("/images/favorites/:image_id").put(favoriteController.handleFavorite);
 
+router.route("/users/:id")
+  .get(usersController.getUserById)
+  .put(usersController.update)
+
 export default router;

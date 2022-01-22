@@ -11,11 +11,6 @@ router.get("/categories", imageController.getCategories);
 router.get("/category/:category", imageController.getImagesByCategory);
 router.get("/image/:id", imageController.getImageById);
 
-router
-  .route("/users/:id")
-  .get(usersController.getUserById)
-  .put(usersController.update)
-  .delete(usersController.delete);
 
-  
+
 export default router;
