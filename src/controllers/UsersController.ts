@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import "../lib/env";
 import bcryptjs from "bcryptjs";
 import UserModel from "../models/User";
-import ImageModel from "@models/Image";
+import FavoriteModel from "@models/Favorites";
 
 const ITEMS_PER_PAGE = 10;
 interface RequestWithToken extends Request {
@@ -22,10 +22,16 @@ export default class UsersController {
       }
 
       body.password = await bcryptjs.hash(body.password, 10);
+      body.state = "ativo";
 
       UserModel.create(body, (err, newUser) => {
         if (newUser) {
-          res.status(201).json(newUser);
+          FavoriteModel.create(
+            { user: newUser._id, favorites: [] },
+            (err, newFavorite) => {
+              res.status(201).json(newUser);
+            }
+          );
         } else {
           res.sendStatus(400);
         }
