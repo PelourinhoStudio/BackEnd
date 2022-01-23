@@ -18,6 +18,7 @@ export let UserSchema = new Schema({
     type: String,
     enum: ["admin", "designer", "default"],
     lowercase: true,
+    default: "default",
   },
 });
 
