@@ -5,16 +5,18 @@
     "title": "REST API",
     "description": ""
   },
-  "host": "localhost:3333",
+  "host": "localhost:3000",
   "basePath": "/",
-  "tags": [],
-  "schemes": ["http"],
+  "tags": ["auth", "admin"],
+  "schemes": [
+    "http"
+  ],
   "consumes": [],
   "produces": [],
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": [],
+        "tags": ["auth"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -32,7 +34,7 @@
     },
     "/auth/login": {
       "post": {
-        "tags": [],
+        "tags": ["auth"],
         "description": "",
         "parameters": [
           {
@@ -63,7 +65,7 @@
     },
     "/admin/users": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -95,7 +97,7 @@
     },
     "/admin/users/{id}": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -121,7 +123,7 @@
         }
       },
       "put": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -147,7 +149,7 @@
         }
       },
       "delete": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -175,7 +177,7 @@
     },
     "/admin/users/state/{state}": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -213,7 +215,7 @@
     },
     "/admin/users/type/{type}": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -251,7 +253,7 @@
     },
     "/admin/images": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -270,7 +272,7 @@
         }
       },
       "post": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -291,7 +293,7 @@
     },
     "/admin/images/{id}": {
       "get": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -317,7 +319,7 @@
         }
       },
       "put": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -343,7 +345,7 @@
         }
       },
       "delete": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [
           {
@@ -371,7 +373,7 @@
     },
     "/admin/images/tags": {
       "post": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -392,22 +394,9 @@
     },
     "/admin/images/category": {
       "post": {
-        "tags": [],
+        "tags": ["admin"],
         "description": "",
-        "parameters": [
-          {
-            "name": "obj",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "body": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -426,9 +415,221 @@
     },
     "/me/": {
       "get": {
-        "tags": [],
+        "tags": ["designer"],
         "description": "",
         "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/images": {
+      "get": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "post": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/images/like/{id}": {
+      "put": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/images/liked": {
+      "get": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/images/favorites": {
+      "get": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/images/favorites/{image_id}": {
+      "put": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "image_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/me/edit": {
+      "put": {
+        "tags": ["designer"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/images": {
+      "get": {
+        "tags": ["public"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["public"],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/category/{category}": {
+      "get": {
+        "tags": ["public"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "tags": ["public"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/image/{id}": {
+      "get": {
+        "tags": ["public"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
